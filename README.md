@@ -1,4 +1,7 @@
-<h1 align="center">🌟 OP Auto Clicker – The Ultimate Auto Clicker </h1>
+
+<h1 align="center">🌟 OP Auto Clicker – The Ultimate Auto Clicker <br><font size="5px">*now with more cursors*</font></h1>
+
+<h2 align="center"> 🔴**IMPORTANT**❗🔴<br>This fork is not planned to be updated! Consider using the original unless you specifically need this version. </h2>
 
 <blockquote align="center"><b>Effortless automation. Zero distractions. 100% customizable.</b></blockquote>
 
@@ -7,7 +10,7 @@
 <p align="center">Whether you're automating repetitive tasks, dominating click-intensive games, or streamlining your workflow, <b>OP Auto Clicker</b> offers the perfect balance of speed, control, and simplicity.</p>
 
 <p align="center">
-  <a href="https://github.com/your-username/op-auto-clicker/releases">
+  <a href="https://github.com/memtx/OP-Auto-Clicker-with-multiple-clicks/releases">
     <img src="https://img.shields.io/badge/⬇️_DOWNLOAD_OP_AUTO_CLICKER-0055FF?style=for-the-badge&logo=github&logoColor=white&labelColor=0A2463&color=white" alt="Download OP Auto Clicker">
   </a>
   <br>
