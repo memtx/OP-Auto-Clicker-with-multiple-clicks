@@ -1,7 +1,7 @@
 
 <h1 align="center">🌟 OP Auto Clicker – The Ultimate Auto Clicker <br><font size="5px">*now with more cursors*</font></h1>
 
-<h2 align="center"> 🔴**IMPORTANT**❗🔴<br>This fork is not planned to be updated! Consider using the original unless you specifically need this version. </h2>
+<h2 align="center"> 🔴**IMPORTANT**🔴<br>This fork is not going to be actively maintained and updates will be very rare, if any. In the future it might not work as intended.</h2>
 
 <blockquote align="center"><b>Effortless automation. Zero distractions. 100% customizable.</b></blockquote>
 
