@@ -4,7 +4,7 @@
         xmlns:commands="clr-namespace:AutoClicker.Commands"
         xmlns:enums="clr-namespace:AutoClicker.Enums"
         ResizeMode="CanMinimize"
-        Height="320" Width="450">
+        Height="326" Width="450">
     <Window.Resources>
         <ResourceDictionary Source="../Resources/MainWindowResources.xaml"/>
     </Window.Resources>
@@ -28,7 +28,7 @@
                         Executed="CaptureMouseScreenCoordinatesCommand_Execute"/>
     </Window.CommandBindings>
 
-    <Grid Name="mainWindowGrid">
+    <Grid Name="mainWindowGrid" Margin="0,0,0,7">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -48,7 +48,7 @@
             </Menu>
         </DockPanel>
 
-        <Grid Name="primaryGrid" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Grid Name="primaryGrid" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="14,9,0,0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -214,12 +214,18 @@
                 <Button Name="hotkeysButton"
                         Grid.Row="1" Grid.Column="1" Margin="5"
                         Content="Hotkeys" Command="commands:MainWindowCommands.HotkeySettings"/>
-                <CheckBox Name="topMostCheckBox"
-                          Grid.Row="1" Grid.Column="1" Margin="5"
-                          VerticalAlignment="Center" HorizontalAlignment="Center"
-                          Content="Top most window"
-                          Checked="TopMostCheckBox_CheckedChanged" Unchecked="TopMostCheckBox_CheckedChanged"/>
             </UniformGrid>
         </Grid>
+        <CheckBox x:Name="topMostCheckBox"
+                          Grid.Row="1" Margin="301,244,0,0"
+                          VerticalAlignment="Top" HorizontalAlignment="Left"
+                          Content="Top most window"
+                          Checked="TopMostCheckBox_CheckedChanged" Unchecked="TopMostCheckBox_CheckedChanged" RenderTransformOrigin="0.514,0.675"/>
+        <CheckBox x:Name="clickFixCheckBox"
+                        Content="Insta-click fix" 
+                        HorizontalAlignment="Left" 
+                        Margin="208,244,0,0" Grid.Row="1" 
+                        VerticalAlignment="Top"
+                        ToolTip="Normally one call is used for mouseUp and mouseDown events, however some games check for input such that the Up and Down calls must be on different frames. This fix makes the calls individual and puts a 20ms timeout inbetween (1/60 of a second + room for dropped frames)." />
     </Grid>
 </Window>

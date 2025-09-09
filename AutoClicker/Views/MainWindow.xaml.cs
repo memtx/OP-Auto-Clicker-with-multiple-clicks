@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Timers;
 using System.Windows;
 using System.Windows.Input;
@@ -47,6 +48,12 @@ namespace AutoClicker.Views
         private ImageSource _defaultIcon;
         private nint _mainWindowHandle;
         private HwndSource _source;
+
+
+        private List<Point> multiplePosPoints = new List<Point>{ };
+        private static int multiplePosIndex = 0;
+        private static bool instantFix = false;
+
 
         #region Life Cycle
 
@@ -230,7 +237,7 @@ namespace AutoClicker.Views
             TextBoxPickedXValue.Text = point.X.ToString();
             TextBoxPickedYValue.Text = point.Y.ToString();
 
-            MultiplePosPoints.Add(point);
+            multiplePosPoints.Add(point);
             Log.Information("MANULYNX: Multipos added");
 
             if(AutoClickerSettings.SelectedLocationMode == LocationMode.PickedLocation)
@@ -272,10 +279,10 @@ namespace AutoClicker.Views
                     return new Point(AutoClickerSettings.PickedXValue, AutoClickerSettings.PickedYValue);
             
                 case LocationMode.MultipleLocation:
-                    if(MultiplePosIndex > MultiplePosPoints.Count-1)
-                        MultiplePosIndex = 0;
-                    MultiplePosIndex++;
-                    return MultiplePosPoints.ElementAt(MultiplePosIndex-1);
+                    if(multiplePosIndex > multiplePosPoints.Count-1)
+                        multiplePosIndex = 0;
+                    multiplePosIndex++;
+                    return multiplePosPoints.ElementAt(multiplePosIndex-1);
 
                 default:
                 case LocationMode.CurrentLocation:
@@ -399,7 +406,7 @@ namespace AutoClicker.Views
                 switch (AutoClickerSettings.SelectedMouseButton)
                 {
                     case MouseButton.Left:
-                        PerformMouseClick(Constants.MOUSEEVENTF_LEFTDOWN, Constants.MOUSEEVENTF_LEFTUP, SelectedPosition.X, SelectedPosition.Y);
+                        PerformMouseClick(Constants.MOUSEEVENTF_LEFTDOWN, Constants.MOUSEEVENTF_LEFTUP , SelectedPosition.X, SelectedPosition.Y);
                         break;
                     case MouseButton.Right:
                         PerformMouseClick(Constants.MOUSEEVENTF_RIGHTDOWN, Constants.MOUSEEVENTF_RIGHTUP, SelectedPosition.X, SelectedPosition.Y);
@@ -421,7 +428,16 @@ namespace AutoClicker.Views
                     Log.Error("Failed to set the mouse cursor!");
                 }
 
-                Win32ApiUtils.ExecuteMouseEvent(mouseDownAction | mouseUpAction, xPos, yPos, 0, 0);
+                if((bool)clickFixCheckBox.IsChecked)
+                {
+                    Win32ApiUtils.ExecuteMouseEvent(mouseDownAction, xPos, yPos, 0, 0);
+                    Thread.Sleep(20);
+                    Win32ApiUtils.ExecuteMouseEvent(mouseUpAction, xPos, yPos, 0, 0);
+                }
+                else
+                {
+                    Win32ApiUtils.ExecuteMouseEvent(mouseDownAction | mouseUpAction, xPos, yPos, 0, 0);
+                }
             }
         }
 
@@ -533,14 +549,11 @@ namespace AutoClicker.Views
             Topmost = checkbox.IsChecked.Value;
         }
 
-        private List<Point> MultiplePosPoints = new List<Point>{ };
-        private static int MultiplePosIndex = 0;
-
         private void MultipleCaptureMouseScreenCoordinatesButton_Click(object sender, RoutedEventArgs e)
         {
             AutoClickerSettings.SelectedLocationMode = LocationMode.MultipleLocation;
             
-            MultiplePosPoints.Clear();
+            multiplePosPoints.Clear();
 
             if (captureMouseCoordinatesWindow == null)
             {

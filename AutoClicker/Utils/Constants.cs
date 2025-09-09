@@ -32,6 +32,10 @@ namespace AutoClicker.Utils
         public const int MOUSEEVENTF_RIGHTUP = 0x10;
         public const int MOUSEEVENTF_MIDDLEDOWN = 0x0020;
         public const int MOUSEEVENTF_MIDDLEUP = 0x0040;
+        public const int MOUSEEVENTF_ABSOLUTE = 0x8000;
+        public const int MOUSEEVENTF_MOVE = 0x0001;
+
+
 
         public const int MOD_NONE = 0x0;
         public const int MOD_ALT = 0x0001;
