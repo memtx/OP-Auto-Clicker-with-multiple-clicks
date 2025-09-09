@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
+using AutoClicker.Models;
 using AutoClicker.Utils;
 using Serilog;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
@@ -83,7 +84,16 @@ namespace AutoClicker.Views
             OnCoordinatesCaptured?.Invoke(this, position);
 
             Log.Information("Captured mouse position: {PositionX}, {PositionY}", position.X, position.Y);
-            Close();
+            
+            if(SettingsUtils.CurrentSettings.AutoClickerSettings.SelectedLocationMode != Enums.LocationMode.MultipleLocation)
+            {
+                Log.Information("MANULYNX: Closing");
+                Close();
+            }
+            else
+            {
+                Log.Information("MANULYNX: NOT CLOSING");
+            }
         }
 
         public event EventHandler<Point> OnCoordinatesCaptured;

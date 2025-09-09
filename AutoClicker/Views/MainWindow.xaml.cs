@@ -219,6 +219,9 @@ namespace AutoClicker.Views
                 };
             }
 
+            
+            AutoClickerSettings.SelectedLocationMode = LocationMode.PickedLocation;
+
             captureMouseCoordinatesWindow.Show();
         }
 
@@ -226,7 +229,12 @@ namespace AutoClicker.Views
         {
             TextBoxPickedXValue.Text = point.X.ToString();
             TextBoxPickedYValue.Text = point.Y.ToString();
-            RadioButtonSelectedLocationMode_PickedLocation.IsChecked = true;
+
+            MultiplePosPoints.Add(point);
+            Log.Information("MANULYNX: Multipos added");
+
+            if(AutoClickerSettings.SelectedLocationMode == LocationMode.PickedLocation)
+                RadioButtonSelectedLocationMode_PickedLocation.IsChecked = true;
         }
 
         #endregion Commands
@@ -258,8 +266,22 @@ namespace AutoClicker.Views
 
         private Point GetSelectedPosition()
         {
-            return AutoClickerSettings.SelectedLocationMode == LocationMode.CurrentLocation ?
-                MouseCursor.Position : new Point(AutoClickerSettings.PickedXValue, AutoClickerSettings.PickedYValue);
+            switch(AutoClickerSettings.SelectedLocationMode) 
+            {        
+                case LocationMode.PickedLocation:
+                    return new Point(AutoClickerSettings.PickedXValue, AutoClickerSettings.PickedYValue);
+            
+                case LocationMode.MultipleLocation:
+                    if(MultiplePosIndex > MultiplePosPoints.Count-1)
+                        MultiplePosIndex = 0;
+                    MultiplePosIndex++;
+                    return MultiplePosPoints.ElementAt(MultiplePosIndex-1);
+
+                default:
+                case LocationMode.CurrentLocation:
+                    return MouseCursor.Position; 
+            
+            }
         }
 
         private int GetSelectedXPosition()
@@ -372,16 +394,18 @@ namespace AutoClicker.Views
         {
             Dispatcher.Invoke(() =>
             {
+                Point SelectedPosition = GetSelectedPosition();
+
                 switch (AutoClickerSettings.SelectedMouseButton)
                 {
                     case MouseButton.Left:
-                        PerformMouseClick(Constants.MOUSEEVENTF_LEFTDOWN, Constants.MOUSEEVENTF_LEFTUP, GetSelectedXPosition(), GetSelectedYPosition());
+                        PerformMouseClick(Constants.MOUSEEVENTF_LEFTDOWN, Constants.MOUSEEVENTF_LEFTUP, SelectedPosition.X, SelectedPosition.Y);
                         break;
                     case MouseButton.Right:
-                        PerformMouseClick(Constants.MOUSEEVENTF_RIGHTDOWN, Constants.MOUSEEVENTF_RIGHTUP, GetSelectedXPosition(), GetSelectedYPosition());
+                        PerformMouseClick(Constants.MOUSEEVENTF_RIGHTDOWN, Constants.MOUSEEVENTF_RIGHTUP, SelectedPosition.X, SelectedPosition.Y);
                         break;
                     case MouseButton.Middle:
-                        PerformMouseClick(Constants.MOUSEEVENTF_MIDDLEDOWN, Constants.MOUSEEVENTF_MIDDLEUP, GetSelectedXPosition(), GetSelectedYPosition());
+                        PerformMouseClick(Constants.MOUSEEVENTF_MIDDLEDOWN, Constants.MOUSEEVENTF_MIDDLEUP, SelectedPosition.X, SelectedPosition.Y);
                         break;
                 }
             });
@@ -389,6 +413,7 @@ namespace AutoClicker.Views
 
         private void PerformMouseClick(int mouseDownAction, int mouseUpAction, int xPos, int yPos)
         {
+
             for (int i = 0; i < GetNumberOfMouseActions(); ++i)
             {
                 if (!Win32ApiUtils.SetCursorPosition(xPos, yPos))
@@ -494,8 +519,10 @@ namespace AutoClicker.Views
 
         private void RadioButtonSelectedLocationMode_CurrentLocationOnChecked(object sender, RoutedEventArgs e)
         {
-            TextBoxPickedXValue.Text = string.Empty;
-            TextBoxPickedYValue.Text = string.Empty;
+            TextBoxPickedXValue.Text = "";
+            TextBoxPickedYValue.Text = "";
+
+            AutoClickerSettings.SelectedLocationMode = LocationMode.CurrentLocation;
         }
 
         #endregion Event Handlers
@@ -504,6 +531,30 @@ namespace AutoClicker.Views
         {
             CheckBox checkbox = (CheckBox)sender;
             Topmost = checkbox.IsChecked.Value;
+        }
+
+        private List<Point> MultiplePosPoints = new List<Point>{ };
+        private static int MultiplePosIndex = 0;
+
+        private void MultipleCaptureMouseScreenCoordinatesButton_Click(object sender, RoutedEventArgs e)
+        {
+            AutoClickerSettings.SelectedLocationMode = LocationMode.MultipleLocation;
+            
+            MultiplePosPoints.Clear();
+
+            if (captureMouseCoordinatesWindow == null)
+            {
+                captureMouseCoordinatesWindow = new CaptureMouseScreenCoordinatesWindow();
+                captureMouseCoordinatesWindow.OnCoordinatesCaptured += CaptureMouseCoordinatesWindow_OnCoordinatesCaptured;
+                captureMouseCoordinatesWindow.Closed += (o, args) =>
+                {
+                    captureMouseCoordinatesWindow.OnCoordinatesCaptured -= CaptureMouseCoordinatesWindow_OnCoordinatesCaptured;
+                    captureMouseCoordinatesWindow = null;
+                };
+            }
+
+            captureMouseCoordinatesWindow.Show();
+
         }
     }
 }

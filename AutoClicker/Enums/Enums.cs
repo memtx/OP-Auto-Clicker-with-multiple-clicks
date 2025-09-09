@@ -22,7 +22,8 @@
     public enum LocationMode
     {
         CurrentLocation = 0,
-        PickedLocation = 1
+        PickedLocation = 1,
+        MultipleLocation = 2
     }
 
     public enum Operation

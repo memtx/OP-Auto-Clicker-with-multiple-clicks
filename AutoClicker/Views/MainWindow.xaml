@@ -96,7 +96,7 @@
             </GroupBox>
 
             <GroupBox Name="clickRepeatGroupBox"
-                      Header="Click Repeat" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+                      Header="Click Repeat" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,0,18,55" Grid.RowSpan="2">
                 <Grid Name="clickRepeatInnerGrid"
                       HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,5,0,0">
                     <Grid.RowDefinitions>
@@ -129,7 +129,7 @@
             </GroupBox>
 
             <GroupBox Name="clickPositionGroupBox"
-                      Header="Click Position" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2">
+                      Header="Click Position" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Margin="90,0,0,56">
                 <Grid Name="clickPositionInnerGrid"
                       HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,5,0,0">
                     <Grid.RowDefinitions>
@@ -169,13 +169,19 @@
                                     Command="commands:MainWindowCommands.CaptureMouseScreenCoordinates">
                                 <Image Source="../Resources/Icons/location-crosshairs-solid.ico"></Image>
                             </Button>
+                            <Button Name="MultipleCaptureMouseScreenCoordinatesButton"
+                                    Margin="5, 0, 0, 0" Width="20" Height="20"
+                                    ToolTip="Use the mouse to capture multiple coordinates on the screen where you want to click."
+                                    Click="MultipleCaptureMouseScreenCoordinatesButton_Click">
+                                <Image Source="../Resources/Icons/location-crosshairs-multiple.ico"></Image>
+                            </Button>
                         </StackPanel>
                     </RadioButton>
                 </Grid>
             </GroupBox>
 
             <GroupBox Name="clickOptionGroupBox"
-                      Header="Click Options" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4">
+                      Header="Click Options" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" Margin="0,70,0,60" Grid.RowSpan="3">
                 <UniformGrid Name="clickOptionInnerGrid"
                              HorizontalAlignment="Center" VerticalAlignment="Stretch" Rows="1" Columns="4">
                     <TextBlock Grid.Row="0" Grid.Column="0" Text="Mouse Button"

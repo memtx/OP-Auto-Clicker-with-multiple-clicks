@@ -11,6 +11,8 @@
             <LineBreak/>
             <Run Name="AuthorText" Text="Created by Ori Ashual"/>
             <LineBreak/>
+            <Run Name="AuthorText2" Text="fork by Manulynx"/>
+            <LineBreak/>
             <LineBreak/>
             <Hyperlink Name="UrlHyperlink" RequestNavigate="Hyperlink_RequestNavigate" ToolTip="GitHub"/>
         </TextBlock>
